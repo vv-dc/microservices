@@ -14,4 +14,4 @@ node_modules
 .DS_Store
 
 # Client
-*/public/build/
+**/public/build/

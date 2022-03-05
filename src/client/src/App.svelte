@@ -1,6 +1,6 @@
 <script>
     const fetchData = async () => {
-        const url = `${process.env.BACKEND_HOST}/api`;
+        const url = `${process.env.BACKEND_HOST}/ping`;
         const result = await fetch(url);
         return await result.json();
     };
