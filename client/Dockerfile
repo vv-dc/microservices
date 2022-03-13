@@ -1,4 +1,4 @@
-FROM node:17.6-stretch-slim AS build
+FROM node:17.6-alpine AS build
 WORKDIR /usr/src/app
 RUN --mount=type=bind,source=package.json,target=package.json \
   --mount=type=bind,source=yarn.lock,target=yarn.lock \
