@@ -1,0 +1,12 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0"
+  }
+}

@@ -1,0 +1,17 @@
+# environment files
+*.env
+
+# vscode local configuration
+.vscode
+
+# idea config
+.idea
+
+# dependencies
+node_modules
+
+# misc
+.DS_Store
+
+# Client
+**/public/build/
