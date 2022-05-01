@@ -5,29 +5,24 @@ metadata:
 spec:
   template:
     spec:
+      initContainers:
+        - name: migration-healthcheck
+          image: migration:0.1
+          command: ["sh", "-c", "yarn healthcheck; while [ $? -ne 0 ]; do yarn healthcheck; done"]
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+            - secretRef:
+                name: postgres-secret
       containers:
       - name: migration
         image: migration:0.1
         command: ["yarn", "migrate:up"]
-        env:
-          - name: PG_HOST
-            value: postgres-service
-          - name: PG_PORT
-            value: "5432"
-          - name: PG_USER
-            value: root
-          - name: PG_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: postgres-secret
-          - name: PG_DATABASE
-            value: app
-        readinessProbe:
-          exec:
-            command:
-              - "yarn healthcheck"
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        envFrom:
+          - configMapRef:
+              name: postgres-config
+          - secretRef:
+              name: postgres-secret
       restartPolicy: OnFailure
   ttlSecondsAfterFinished: 0
   backoffLimit: 5

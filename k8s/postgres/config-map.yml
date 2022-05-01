@@ -3,4 +3,7 @@ kind: ConfigMap
 metadata:
   name: postgres-config
 data:
-  POSTGRES_DB: database
+  POSTGRES_DB: app
+  POSTGRES_USER: root
+  POSTGRES_HOST: postgres-service
+  POSTGRES_PORT: '5432'
