@@ -1,21 +1,20 @@
-const http = require('http');
-const { config } = require('./config');
+import fastify from 'fastify';
+import { app } from './app.js'
+import { config } from './config.js';
 
-const requestHandler = (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'application/json');
+const { port, host, logger } = config.server;
 
-    if (req.url === "/ping") {
-        res.writeHead(200);
-        res.write(JSON.stringify({ message: 'pong' }));
-    } else {
-        res.writeHead(404);
+const bootstrap = async (app) => {
+    try {
+        const server = fastify({
+            logger,
+        });
+        server.register(app);
+        await server.listen(port, host);
+    } catch (err) {
+        console.error(err);
+        process.exit(1);
     }
-
-    res.end();
 };
 
-const { port, host } = config.server;
-const server = http.createServer(requestHandler);
-
-server.listen(port, host);
+bootstrap(app);

@@ -5,7 +5,7 @@ const pgsql = require('knex')(knexConfig['development']);
     try {
         await pgsql.raw("SELECT 1");
         console.log("PostgreSQL connected");
-        process.exitCode == 0;
+        process.exitCode = 0;
     } catch (e) {
         console.log("PostgreSQL not connected");
         process.exitCode = 1;
