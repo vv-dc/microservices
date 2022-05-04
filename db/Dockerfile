@@ -4,5 +4,5 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 
-COPY knexfile.js healthcheck.js ./
+COPY knexfile.js ./knexfile.js
 COPY ./migrations ./migrations

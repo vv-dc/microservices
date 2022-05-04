@@ -7,8 +7,15 @@ spec:
     spec:
       initContainers:
         - name: migration-healthcheck
-          image: migration:0.1
-          command: ["sh", "-c", "yarn healthcheck; while [ $? -ne 0 ]; do yarn healthcheck; done"]
+          image: postgres:14.2-alpine3.15
+          imagePullPolicy: IfNotPresent
+          command:  ['sh', '-c','
+          export PGHOST=$POSTGRES_HOST;
+          export PGPORT=$POSTGRES_PORT;
+          export PGUSER=$POSTGRES_USER; 
+          export PGPASSWORD=$POSTGRES_PASSWORD; 
+          export PGDATABASE=$POSTGRES_DB;
+          until pg_isready; do sleep 2; done;']
           envFrom:
             - configMapRef:
                 name: postgres-config
@@ -26,4 +33,4 @@ spec:
       restartPolicy: OnFailure
   ttlSecondsAfterFinished: 0
   backoffLimit: 5
-
+  activeDeadlineSeconds: 60
