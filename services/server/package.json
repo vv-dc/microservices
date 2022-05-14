@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "start": "node src/server.js"
   },
   "devDependencies": {
     "dotenv": "^16.0.0"
+  },
+  "dependencies": {
+    "fastify": "^3.29.0",
+    "fastify-plugin": "^3.0.1",
+    "knex": "^2.0.0",
+    "pg": "^8.7.3"
   }
 }

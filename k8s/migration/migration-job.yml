@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration-job
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: migration-healthcheck
+          image: postgres:14.2-alpine3.15
+          imagePullPolicy: IfNotPresent
+          command:  ['sh', '-c','
+          export PGHOST=$POSTGRES_HOST;
+          export PGPORT=$POSTGRES_PORT;
+          export PGUSER=$POSTGRES_USER; 
+          export PGPASSWORD=$POSTGRES_PASSWORD; 
+          export PGDATABASE=$POSTGRES_DB;
+          until pg_isready; do sleep 2; done;']
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+            - secretRef:
+                name: postgres-secret
+      containers:
+      - name: migration
+        image: migration:0.1
+        command: ["yarn", "migrate:up"]
+        envFrom:
+          - configMapRef:
+              name: postgres-config
+          - secretRef:
+              name: postgres-secret
+      restartPolicy: OnFailure
+  ttlSecondsAfterFinished: 0
+  backoffLimit: 5
+  activeDeadlineSeconds: 60
