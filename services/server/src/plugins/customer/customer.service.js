@@ -1,15 +1,14 @@
-import { config } from "../../config.js";
-
-const { mailing } = config.broker.queue;
-
 export class CustomerService {
-    constructor(customerDao, brokerService) {
-        this.customerDao = customerDao;
-        this.brokerService = brokerService;
+    #customerDao;
+    #notifierService;
+
+    constructor(customerDao, notifierService) {
+        this.#customerDao = customerDao;
+        this.#notifierService = notifierService;
     }
 
     async getCustomerById(customerId) {
-        const customer = await this.customerDao.findCustomerById(customerId);
+        const customer = await this.#customerDao.findCustomerById(customerId);
         if (!customer) {
             throw new Error('Customer not found!');
         }
@@ -17,23 +16,23 @@ export class CustomerService {
     }
 
     async createCustomer(createCustomerDto) {
-        const customer = await this.customerDao.createCustomer(createCustomerDto);
-        await this.notifyNewCustomer(customer);
+        const customer = await this.#customerDao.createCustomer(createCustomerDto);
+        await this.#notifierService.notifyNewCustomer(customer);
+        await this.#notifierService.notifyCustomerEvent(customer.id, 'create');
         return customer;
     }
 
-    deleteCustomerById(customerId) {
-        return this.customerDao.deleteCustomerById(customerId);
+    async deleteCustomerById(customerId) {
+        const customer = await this.#customerDao.deleteCustomerById(customerId);
+        if (!customer) return;
+        await this.#notifierService.notifyCustomerEvent(customer.id, 'delete');
+        return customer;
     }
 
-    updateCustomerById(customerId, updateCustomerDto) {
-        return this.customerDao.updateCustomerById(customerId, updateCustomerDto);
-    }
-
-    async notifyNewCustomer(customer) {
-        const { queueName, newCustomerKey } = mailing;
-        const { id, email, fullName } = customer;
-        const payload = { id, email, fullName };
-        await this.brokerService.publishDirect(queueName, newCustomerKey, payload);
+    async updateCustomerById(customerId, updateCustomerDto) {
+        const customer = await this.#customerDao.updateCustomerById(customerId, updateCustomerDto);
+        if (!customer) return;
+        await this.#notifierService.notifyCustomerEvent(customer.id, 'update');
+        return customer;
     }
 }

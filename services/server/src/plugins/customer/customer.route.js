@@ -19,9 +19,7 @@ export const customerRoutes = async (fastify) => {
         },
         handler: async (request, reply) => {
             const { customerId } = request.params;
-            request.log.warn(JSON.stringify(customerId));
             const customer = await customerService.getCustomerById(customerId);
-            request.log.warn(JSON.stringify(customer));
             reply.code(200).send(customer);
         },
     });

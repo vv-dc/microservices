@@ -1,22 +1,28 @@
-export class BrokerService {
-    constructor(broker) {
-        this.broker = broker;
+import { config } from "../../config.js";
+
+const { defaultExchange } = config.broker.exchange;
+
+export class BrokerService {   
+    #channel;
+
+    constructor(channel) {
+        this.#channel = channel;
+    }
+    
+    static async build(broker) {
+        const channel = await broker.createChannel();
+        return new BrokerService(channel);
     }
 
     #serializeMessage(message) {
         return Buffer.from(JSON.stringify(message));
     }
 
-    #createChannel() {
-        return this.broker.createChannel();
-    }
-
-    async publishDirect(queue, pattern, message, durable = true) {
-        const channel = await this.#createChannel();
-        await channel.assertQueue(queue, { durable });
-        await channel.bindQueue(queue, 'amq.direct', pattern);
+    async publishDefault(pattern, message) {
+        const { name, type, durable } = defaultExchange;
+        await this.#channel.assertExchange(name, type, { durable });
+        
         const serialized = this.#serializeMessage(message);
-        await channel.sendToQueue(queue, serialized, { persistent: true });
-        await channel.close();
+        await this.#channel.publish(name, pattern, serialized, { persistent: true });
     }
 }

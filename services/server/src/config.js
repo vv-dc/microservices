@@ -21,13 +21,20 @@ export const config = {
             username: process.env.RABBITMQ_USERNAME,
             password: process.env.RABBITMQ_PASSWORD,
         },
+        exchange: {
+            defaultExchange: {
+                name: 'custom-exchange',
+                type: 'direct',
+                durable: true,
+            }
+        },
         queue: {
             mailing: {
-                queueName: 'mailing-queue',
                 newCustomerKey: 'new-customer',
+            },
+            logging: {
+                customerEventKey: 'customer-event',
             }
-        }
+        },
     },
 };
-
-console.log(JSON.stringify(config));
