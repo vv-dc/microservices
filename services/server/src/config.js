@@ -12,5 +12,8 @@ export const config = {
         user: process.env.POSTGRES_USER,
         database: process.env.POSTGRES_DB,
         password: process.env.POSTGRES_PASSWORD,
-    }
+    },
+    broker: {
+        connectionUrl: 'amqp://rabbitmq-cluster:5672'
+    },
 };

@@ -4,9 +4,9 @@ import { customerRoutes } from "./customer.route.js";
 import { CustomerService } from "./customer.service.js";
 
 export const customer = async (fastify) => {
-    const { db } = fastify;
+    const { db, brokerService } = fastify;
     const customerDao = new CustomerDao(db);
-    const customerService = new CustomerService(customerDao);
+    const customerService = new CustomerService(customerDao, brokerService);
     
     fastify.decorate('customerService', customerService);
     fastify.register(customerRoutes);
@@ -14,5 +14,5 @@ export const customer = async (fastify) => {
 
 export default fp(customer, {
     name: 'customer',
-    dependencies: ['db']
+    dependencies: ['db', 'broker']
 });

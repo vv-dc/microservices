@@ -1,0 +1,20 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq-cluster
+spec:
+  image: 'rabbitmq:3.10.1-alpine'
+  replicas: 1
+  resources:
+    requests:
+      cpu: 256m
+      memory: 1Gi
+    limits:
+      cpu: 256m
+      memory: 1Gi
+  rabbitmq:
+    additionalConfig: |
+      default_user= guest 
+      default_pass = guest
+  service:
+    type: LoadBalancer
