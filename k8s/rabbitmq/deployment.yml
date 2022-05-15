@@ -15,9 +15,23 @@ spec:
     limits:
       cpu: 256m
       memory: 1Gi
-  rabbitmq:
-    additionalConfig: |
-      default_user = admin
-      default_pass = qwerty
   service:
-    type: LoadBalancer
+    type: LoadBalancer    
+  override:
+    statefulSet:
+        spec:
+          template:
+            spec:
+              containers:
+                - name: rabbitmq
+                  env:
+                  - name: RABBITMQ_DEFAULT_USER
+                    valueFrom:
+                      secretKeyRef:
+                        name: rabbitmq-secret
+                        key: RABBITMQ_USERNAME
+                  - name: RABBITMQ_DEFAULT_PASS
+                    valueFrom:
+                      secretKeyRef:
+                        name: rabbitmq-secret
+                        key: RABBITMQ_PASSWORD      
