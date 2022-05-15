@@ -3,15 +3,20 @@ export class BrokerService {
         this.broker = broker;
     }
 
-    serializeMessage(message) {
+    #serializeMessage(message) {
         return Buffer.from(JSON.stringify(message));
     }
 
-    async publishDirect(queue, pattern, message) {
-        const channel = await this.broker.createChannel();
+    #createChannel() {
+        return this.broker.createChannel();
+    }
+
+    async publishDirect(queue, pattern, message, durable = true) {
+        const channel = await this.#createChannel();
+        await channel.assertQueue(queue, { durable });
         await channel.bindQueue(queue, 'amq.direct', pattern);
-        const serialized = this.serializeMessage(message);
-        await channel.sendToQueue(queue, serialized);
+        const serialized = this.#serializeMessage(message);
+        await channel.sendToQueue(queue, serialized, { persistent: true });
         await channel.close();
     }
 }

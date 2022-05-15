@@ -5,6 +5,9 @@ metadata:
 spec:
   image: 'rabbitmq:3.10.1-alpine'
   replicas: 1
+  persistence:
+    storageClassName: standard
+    storage: 1Gi
   resources:
     requests:
       cpu: 256m
@@ -14,7 +17,7 @@ spec:
       memory: 1Gi
   rabbitmq:
     additionalConfig: |
-      default_user= guest 
-      default_pass = guest
+      default_user = admin
+      default_pass = qwerty
   service:
     type: LoadBalancer

@@ -14,6 +14,20 @@ export const config = {
         password: process.env.POSTGRES_PASSWORD,
     },
     broker: {
-        connectionUrl: 'amqp://rabbitmq-cluster:5672'
+        connection: {
+            protocol: process.env.RABBITMQ_PROTOCOL,
+            hostname: process.env.RABBITMQ_HOST,
+            port: parseInt(process.env.RABBITMQ_PORT ?? '', 10),
+            username: process.env.RABBITMQ_USERNAME,
+            password: process.env.RABBITMQ_PASSWORD,
+        },
+        queue: {
+            mailing: {
+                queueName: 'mailing-queue',
+                newCustomerKey: 'new-customer',
+            }
+        }
     },
 };
+
+console.log(JSON.stringify(config));

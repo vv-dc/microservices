@@ -25,3 +25,7 @@ spec:
                 name: postgres-secret
             - configMapRef:
                 name: postgres-config
+            - secretRef:
+                name: rabbitmq-secret     
+            - configMapRef:
+                name: rabbitmq-config

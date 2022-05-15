@@ -1,3 +1,7 @@
+import { config } from "../../config.js";
+
+const { mailing } = config.broker.queue;
+
 export class CustomerService {
     constructor(customerDao, brokerService) {
         this.customerDao = customerDao;
@@ -26,12 +30,10 @@ export class CustomerService {
         return this.customerDao.updateCustomerById(customerId, updateCustomerDto);
     }
 
-    // TODO: move to config
     async notifyNewCustomer(customer) {
-        const queue = "mail-queue";
-        const key = "new-customer";
+        const { queueName, newCustomerKey } = mailing;
         const { id, email, fullName } = customer;
         const payload = { id, email, fullName };
-        this.brokerService.publishDirect(queue, key, payload);
+        await this.brokerService.publishDirect(queueName, newCustomerKey, payload);
     }
 }

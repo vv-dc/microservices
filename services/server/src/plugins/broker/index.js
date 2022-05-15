@@ -4,8 +4,7 @@ import { config } from '../../config.js';
 import { BrokerService } from './broker.service.js';
 
 const rabbitmq = async (fastify) => {
-    const { connectionUrl } = config.broker;
-    const connection = await amqlib.connect(connectionUrl);
+    const connection = await amqlib.connect(config.broker.connection);
     const brokerService = new BrokerService(connection);
     fastify.decorate('brokerService', brokerService);
 };
