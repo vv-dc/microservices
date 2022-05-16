@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-event-consumer-deployment
+  labels:
+    app: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer-event-consumer
+  template:
+    metadata:
+     labels:
+      app: customer-event-consumer
+    spec:
+      containers:
+        - image: customer-event-consumer:0.1
+          imagePullPolicy: Never
+          name: customer-event-consumer
+          env:
+            - name: RabbitMqConnection__Host
+              valueFrom:
+                configMapKeyRef: 
+                  name: rabbitmq-config
+                  key: RABBITMQ_HOST
+            
+            - name: RabbitMqConnection__Port
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_PORT
+
+            - name: RabbitMqConnection__User
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_USERNAME
+
+            - name: RabbitMqConnection__Password
+              valueFrom:
+                secretKeyRef: 
+                  name: rabbitmq-secret
+                  key: RABBITMQ_PASSWORD
+
