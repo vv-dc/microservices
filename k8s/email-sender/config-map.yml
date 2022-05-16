@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: email-sender-config
+data:
+  EMAIL_HOST: smtp.mailtrap.io
+  EMAIL_PORT: "2525"
+  EMAIL_ADDRESS: example@example.com
