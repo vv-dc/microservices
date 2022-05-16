@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customer-event-consumer-deployment
+  name: logging-deployment
   labels:
-    app: server
+    app: logging
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: customer-event-consumer
+      app: logging
   template:
     metadata:
      labels:
-      app: customer-event-consumer
+      app: logging
     spec:
       containers:
-        - image: customer-event-consumer:0.1
+        - image: logging:0.1
           imagePullPolicy: Never
-          name: customer-event-consumer
+          name: logging
           env:
             - name: RabbitMqConnection__Host
               valueFrom:

@@ -15,12 +15,12 @@ export const config = {
             password: process.env.RABBITMQ_PASSWORD,
         },
         exchange: {
-            name: 'custom-exchange',
+            name: process.env.RABBITMQ_DEFAULT_EXCHANGE,
             type: 'direct',
             durable: true,
         },
         queue: {
-            name: 'email',
+            name: process.env.RABBIMQ_EMAIL_QUEUE,
             durable: true,
         },
         routingKey: 'new-customer',

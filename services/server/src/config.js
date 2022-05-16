@@ -23,7 +23,7 @@ export const config = {
         },
         exchange: {
             defaultExchange: {
-                name: 'custom-exchange',
+                name: process.env.RABBITMQ_DEFAULT_EXCHANGE,
                 type: 'direct',
                 durable: true,
             },

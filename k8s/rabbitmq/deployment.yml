@@ -24,14 +24,13 @@ spec:
             spec:
               containers:
                 - name: rabbitmq
-                  env:
-                  - name: RABBITMQ_DEFAULT_USER
-                    valueFrom:
-                      secretKeyRef:
-                        name: rabbitmq-secret
-                        key: RABBITMQ_USERNAME
-                  - name: RABBITMQ_DEFAULT_PASS
-                    valueFrom:
-                      secretKeyRef:
-                        name: rabbitmq-secret
-                        key: RABBITMQ_PASSWORD      
+                  volumeMounts:
+                  - mountPath: /etc/rabbitmq/config/
+                    name: definitions        
+              volumes:
+              - name: definitions
+                configMap:
+                  name: rabbitmq-definitions
+  rabbitmq:
+    additionalConfig: |
+      load_definitions = /etc/rabbitmq/config/definitions.json
