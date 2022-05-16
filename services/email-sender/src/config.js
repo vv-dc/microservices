@@ -20,7 +20,7 @@ export const config = {
             durable: true,
         },
         queue: {
-            name: process.env.RABBIMQ_EMAIL_QUEUE,
+            name: process.env.RABBITMQ_EMAIL_QUEUE,
             durable: true,
         },
         routingKey: 'new-customer',
