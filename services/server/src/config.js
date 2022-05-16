@@ -26,7 +26,7 @@ export const config = {
                 name: 'custom-exchange',
                 type: 'direct',
                 durable: true,
-            }
+            },
         },
         queue: {
             mailing: {
@@ -34,7 +34,7 @@ export const config = {
             },
             logging: {
                 customerEventKey: 'customer-event',
-            }
+            },
         },
     },
 };

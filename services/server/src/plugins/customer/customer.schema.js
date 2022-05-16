@@ -23,7 +23,7 @@ export const updateCustomerBodySchema = {
     required: [],
 };
 
-export const customerSchema = { 
+export const customerSchema = {
     type: 'object',
     properties: {
         id: { type: 'number' },

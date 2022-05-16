@@ -4,9 +4,7 @@ export class CustomerDao {
     }
 
     findCustomerById(customerId) {
-        return this.db('customers')
-            .where({ id: customerId })
-            .first();
+        return this.db('customers').where({ id: customerId }).first();
     }
 
     async deleteCustomerById(customerId) {
@@ -16,7 +14,7 @@ export class CustomerDao {
             .returning('*');
         return customers[0];
     }
-    
+
     async updateCustomerById(customerId, updateCustomerDto) {
         const { id, ...rest } = updateCustomerDto; // do not allow changing of id
         const customers = await this.db('customers')

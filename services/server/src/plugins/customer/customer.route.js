@@ -1,4 +1,4 @@
-import { 
+import {
     customerParamsSchema,
     updateCustomerBodySchema,
     createCustomerBodySchema,
@@ -11,11 +11,11 @@ export const customerRoutes = async (fastify) => {
     fastify.route({
         method: 'GET',
         url: '/customers/:customerId',
-        schema: { 
+        schema: {
             params: customerParamsSchema,
             response: {
                 200: customerSchema,
-            }
+            },
         },
         handler: async (request, reply) => {
             const { customerId } = request.params;
@@ -42,9 +42,12 @@ export const customerRoutes = async (fastify) => {
         handler: async (request, reply) => {
             const { customerId } = request.params;
             const updateCustomerDto = request.body;
-            await customerService.updateCustomerById(customerId, updateCustomerDto);
+            await customerService.updateCustomerById(
+                customerId,
+                updateCustomerDto
+            );
             reply.code(204).send();
-        }
+        },
     });
 
     fastify.route({
@@ -55,6 +58,6 @@ export const customerRoutes = async (fastify) => {
             const createCustomerDto = request.body;
             await customerService.createCustomer(createCustomerDto);
             reply.code(204).send();
-        }
-    })
-}
+        },
+    });
+};

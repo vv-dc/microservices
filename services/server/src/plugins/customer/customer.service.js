@@ -16,7 +16,9 @@ export class CustomerService {
     }
 
     async createCustomer(createCustomerDto) {
-        const customer = await this.#customerDao.createCustomer(createCustomerDto);
+        const customer = await this.#customerDao.createCustomer(
+            createCustomerDto
+        );
         await this.#notifierService.notifyNewCustomer(customer);
         await this.#notifierService.notifyCustomerEvent(customer.id, 'create');
         return customer;
@@ -30,7 +32,10 @@ export class CustomerService {
     }
 
     async updateCustomerById(customerId, updateCustomerDto) {
-        const customer = await this.#customerDao.updateCustomerById(customerId, updateCustomerDto);
+        const customer = await this.#customerDao.updateCustomerById(
+            customerId,
+            updateCustomerDto
+        );
         if (!customer) return;
         await this.#notifierService.notifyCustomerEvent(customer.id, 'update');
         return customer;

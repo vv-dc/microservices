@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-import { app } from './app.js'
+import { app } from './app.js';
 import { config } from './config.js';
 
 const { port, host, logger } = config.server;

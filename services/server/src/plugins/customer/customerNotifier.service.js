@@ -1,4 +1,4 @@
-import { config } from "../../config.js";
+import { config } from '../../config.js';
 
 const { mailing, logging } = config.broker.queue;
 
@@ -10,13 +10,19 @@ export class CustomerNotifierService {
     }
 
     async notifyNewCustomer(customer) {
-        const { id, email, fullName } = customer;
+        const { id, email, full_name: fullName } = customer;
         const payload = { id, email, fullName };
-        await this.#brokerService.publishDefault(mailing.newCustomerKey, payload);
+        await this.#brokerService.publishDefault(
+            mailing.newCustomerKey,
+            payload
+        );
     }
 
     async notifyCustomerEvent(customerId, type) {
         const payload = { id: customerId, type };
-        await this.#brokerService.publishDefault(logging.customerEventKey, payload);
+        await this.#brokerService.publishDefault(
+            logging.customerEventKey,
+            payload
+        );
     }
 }
