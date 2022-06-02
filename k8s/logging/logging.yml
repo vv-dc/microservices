@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logging-deployment
+  labels:
+    app: logging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logging
+  template:
+    metadata:
+     labels:
+      app: logging
+    spec:
+      containers:
+        - image: logging:0.1
+          imagePullPolicy: Never
+          name: logging
+          env:
+            - name: RabbitMqConnection__Host
+              valueFrom:
+                configMapKeyRef: 
+                  name: rabbitmq-config
+                  key: RABBITMQ_HOST
+            
+            - name: RabbitMqConnection__Port
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_PORT
+
+            - name: RabbitMqConnection__User
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_USERNAME
+
+            - name: RabbitMqConnection__Password
+              valueFrom:
+                secretKeyRef: 
+                  name: rabbitmq-secret
+                  key: RABBITMQ_PASSWORD
+

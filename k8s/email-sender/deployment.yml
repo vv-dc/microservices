@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-deployment
+  name: email-sender-deployment
   labels:
-    app: server
+    app: email-sender
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: server
+      app: email-sender
   template:
     metadata:
      labels:
-      app: server
+      app: email-sender
     spec:
       containers:
-        - image: server:0.1
+        - image: email-sender:0.1
           imagePullPolicy: Never
-          name: server
+          name: email-sender
           ports:
-            - containerPort: 3000
+            - containerPort: 5000
           envFrom:
             - secretRef:
-                name: postgres-secret
+                name: email-sender-secret   
             - configMapRef:
-                name: postgres-config
+                name: email-sender-config
             - secretRef:
                 name: rabbitmq-secret     
             - configMapRef:

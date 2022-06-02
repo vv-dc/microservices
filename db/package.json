@@ -11,8 +11,10 @@
     "migrate:down-all": "knex migrate:rollback --all"
   },
   "dependencies": {
-    "dotenv": "^16.0.0",
     "knex": "^2.0.0",
     "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
   }
 }

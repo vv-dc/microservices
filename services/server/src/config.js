@@ -12,5 +12,29 @@ export const config = {
         user: process.env.POSTGRES_USER,
         database: process.env.POSTGRES_DB,
         password: process.env.POSTGRES_PASSWORD,
-    }
+    },
+    broker: {
+        connection: {
+            protocol: process.env.RABBITMQ_PROTOCOL,
+            hostname: process.env.RABBITMQ_HOST,
+            port: parseInt(process.env.RABBITMQ_PORT ?? '', 10),
+            username: process.env.RABBITMQ_USERNAME,
+            password: process.env.RABBITMQ_PASSWORD,
+        },
+        exchange: {
+            defaultExchange: {
+                name: process.env.RABBITMQ_DEFAULT_EXCHANGE,
+                type: 'direct',
+                durable: true,
+            },
+        },
+        queue: {
+            mailing: {
+                newCustomerKey: 'new-customer',
+            },
+            logging: {
+                customerEventKey: 'customer-event',
+            },
+        },
+    },
 };
