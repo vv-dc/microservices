@@ -5,8 +5,12 @@ import {
     customerSchema,
 } from './customer.schema.js';
 
+const metricName = 'customer_api_http_requests_total';
+
 export const customerRoutes = async (fastify) => {
+    const { client: promClient } = fastify.metrics;
     const { customerService } = fastify;
+    const requestCount = await promClient.register.getSingleMetric(metricName);
 
     fastify.route({
         method: 'GET',
@@ -29,6 +33,7 @@ export const customerRoutes = async (fastify) => {
         url: '/customers/:customerId',
         schema: { params: customerParamsSchema },
         handler: async (request, reply) => {
+            requestCount.labels('delete').inc();
             const { customerId } = request.params;
             await customerService.deleteCustomerById(customerId);
             reply.code(204).send();
@@ -40,6 +45,7 @@ export const customerRoutes = async (fastify) => {
         url: '/customers/:customerId',
         schema: { body: updateCustomerBodySchema },
         handler: async (request, reply) => {
+            requestCount.labels('update').inc();
             const { customerId } = request.params;
             const updateCustomerDto = request.body;
             await customerService.updateCustomerById(
@@ -55,6 +61,7 @@ export const customerRoutes = async (fastify) => {
         url: '/customers',
         schema: { body: createCustomerBodySchema },
         handler: async (request, reply) => {
+            requestCount.labels('create').inc();
             const createCustomerDto = request.body;
             await customerService.createCustomer(createCustomerDto);
             reply.code(204).send();

@@ -16,5 +16,5 @@ export const customer = async (fastify) => {
 
 export default fp(customer, {
     name: 'customer',
-    dependencies: ['db', 'broker'],
+    dependencies: ['db', 'broker', 'prometheus'],
 });
