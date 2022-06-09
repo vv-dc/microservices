@@ -25,3 +25,11 @@ spec:
             name: server-service
             port:
               number: 3000
+
+      - path: /grafana/?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 3000
