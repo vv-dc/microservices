@@ -1,3 +1,21 @@
 - job_name: 'kube-state-metrics'
   static_configs:
     - targets: ['kube-state-metrics.default.svc.cluster.local:8080']
+
+- job_name: kubernetes-cadvisor
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics/cadvisor
+  scheme: https
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+  tls_config:
+    ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    insecure_skip_verify: true
+  kubernetes_sd_configs:
+  - role: node
+  relabel_configs:
+  - separator: ;
+    regex: __meta_kubernetes_node_label_(.+)
+    replacement: $1
+    action: labelmap
