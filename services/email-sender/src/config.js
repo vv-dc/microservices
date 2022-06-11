@@ -36,7 +36,7 @@ export const config = {
             },
             pool: true,
             maxMessages: Infinity,
-            logger: true,
+            logger: false,
         },
         from: process.env.EMAIL_ADDRESS,
     },
