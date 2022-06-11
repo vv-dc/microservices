@@ -50,6 +50,10 @@ spec:
             - mountPath: /etc/grafana/grafana.ini
               subPath: grafana.ini
               name: grafana-conf
+            - mountPath: /etc/grafana/provisioning/datasources/datasources.yaml
+              subPath: datasources.yaml
+              name: grafana-datasources
+
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -57,3 +61,7 @@ spec:
         - name: grafana-conf
           configMap:
             name: grafana-config
+
+        - name: grafana-datasources
+          configMap:
+            name: grafana-datasources-conf
