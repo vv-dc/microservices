@@ -92,11 +92,15 @@ kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-oper
 # 7.9 Port-forward service to access UI locally
 # kubectl port-forward service/prometheus-operated 9090
 
-# 8. Ingress
-
 # 8.1 Enable minikube addon
 # minikube addons enable ingress
 # 8.2 Create resources
 kubectl apply -f $root_dir/k8s/ingress.yml
 # 8.3 Add minikube host
 # sudo echo "192.168.49.2 app.dreamteam.com" >> /etc/hosts 
+
+# 9. Loki
+# 9.1 Set up Loki with Helm
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm upgrade --install loki grafana/loki-stack --set grafana.enabled=true
