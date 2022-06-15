@@ -90,7 +90,8 @@ kubectl apply -f $root_dir/k8s/prometheus
 # 7.8 Create service monitor for RabbitMQ cluster
 kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-operator/main/observability/prometheus/monitors/rabbitmq-servicemonitor.yml
 # 7.9 Port-forward service to access UI locally
-# kubectl port-forward service/prometheus-operated 9090
+# kubectl port-forward service/prometheus 9090
+# kubectl get --raw "/api/v1/nodes/minikube/proxy/metrics/cadvisor"
 
 # 8. Ingress
 
@@ -109,3 +110,14 @@ helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 # 9.3 Set up Loki with enabled Grafana
 helm upgrade --install loki grafana/loki-stack --set grafana.enabled=true
+
+# 10. Grafana
+
+# 10.1 Clear volume
+# kubectl delete pvc grafana-pvc
+# 10.2 Create secret with general config
+kubectl create secret generic grafana-secret --from-file $root_dir/k8s/grafana/configs/grafana.ini
+# 10.3 Create secret with datasources config
+kubectl create secret generic grafana-datasources-secret --from-file $root_dir/k8s/grafana/configs/datasources.yml
+# 10.4 Deploy Grafana
+kubectl apply -f $root_dir/k8s/grafana/deployment

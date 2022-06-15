@@ -49,19 +49,19 @@ spec:
               name: grafana-pv
             - mountPath: /etc/grafana/grafana.ini
               subPath: grafana.ini
-              name: grafana-conf
-            - mountPath: /etc/grafana/provisioning/datasources/datasources.yaml
-              subPath: datasources.yaml
+              name: grafana-secret
+            - mountPath: /etc/grafana/provisioning/datasources/datasources.yml
+              subPath: datasources.yml
               name: grafana-datasources
 
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
             claimName: grafana-pvc
-        - name: grafana-conf
-          configMap:
-            name: grafana-config
+        - name: grafana-secret
+          secret:
+            secretName: grafana-secret
 
         - name: grafana-datasources
-          configMap:
-            name: grafana-datasources-conf
+          secret:
+            secretName: grafana-datasources-secret
